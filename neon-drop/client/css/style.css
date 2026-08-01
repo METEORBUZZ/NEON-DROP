@@ -1,0 +1,285 @@
+/* =============================================================================
+   NEON DROP — retro arcade cabinet theme
+   Tailwind (via CDN) handles layout/spacing utilities; this file carries the
+   things Tailwind utility classes can't express: CRT scanlines, neon glow
+   text, the pixel font, and small game-specific chrome.
+============================================================================= */
+
+/* Press Start 2P and Inter are loaded via <link> in index.html (Google Fonts). */
+
+:root {
+  --neon-cyan: #22d3ee;
+  --neon-magenta: #f472b6;
+  --neon-amber: #fbbf24;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #020617;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.pixel-font {
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  line-height: 1.6;
+}
+
+/* --- Neon glow text -------------------------------------------------- */
+
+.neon-cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 4px var(--neon-cyan), 0 0 12px var(--neon-cyan), 0 0 24px rgba(34, 211, 238, 0.5);
+}
+
+.neon-magenta {
+  color: var(--neon-magenta);
+  text-shadow: 0 0 4px var(--neon-magenta), 0 0 12px var(--neon-magenta), 0 0 24px rgba(244, 114, 182, 0.5);
+}
+
+.neon-amber {
+  color: var(--neon-amber);
+  text-shadow: 0 0 4px var(--neon-amber), 0 0 12px var(--neon-amber), 0 0 24px rgba(251, 191, 36, 0.5);
+}
+
+/* --- CRT scanline overlay ---------------------------------------------- */
+
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.crt-vignette {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* subtle screen flicker */
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.42; }
+}
+.crt-overlay {
+  animation: crt-flicker 6s infinite;
+}
+
+/* --- Game board frame ---------------------------------------------------- */
+
+.board-frame {
+  position: relative; /* anchors #game-over-overlay — do not rely on the
+                          Tailwind "relative" utility for this; it must hold
+                          even if the Tailwind CDN script is slow/blocked */
+  border: 2px solid rgba(34, 211, 238, 0.4);
+  box-shadow:
+    0 0 8px rgba(34, 211, 238, 0.35),
+    0 0 32px rgba(34, 211, 238, 0.15),
+    inset 0 0 24px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+}
+
+#game-canvas,
+#next-canvas {
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.arcade-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  background: rgba(34, 211, 238, 0.08);
+  transition: all 0.15s ease;
+  text-shadow: 0 0 6px rgba(34, 211, 238, 0.7);
+  cursor: pointer;
+}
+
+.arcade-btn:hover:not(:disabled) {
+  background: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+}
+
+.arcade-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.5);
+}
+
+.arcade-btn.magenta {
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+  background: rgba(244, 114, 182, 0.08);
+  text-shadow: 0 0 6px rgba(244, 114, 182, 0.7);
+}
+.arcade-btn.magenta:hover:not(:disabled) {
+  background: rgba(244, 114, 182, 0.2);
+  box-shadow: 0 0 12px rgba(244, 114, 182, 0.6);
+}
+
+.arcade-btn.amber {
+  border-color: var(--neon-amber);
+  color: var(--neon-amber);
+  background: rgba(251, 191, 36, 0.08);
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.7);
+}
+.arcade-btn.amber:hover:not(:disabled) {
+  background: rgba(251, 191, 36, 0.2);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+}
+
+/* --- Name input ----------------------------------------------------- */
+
+.retro-input {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  background: #0f172a;
+  border: 2px solid rgba(148, 163, 184, 0.4);
+  color: #e2e8f0;
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+}
+
+.retro-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+}
+
+/* --- Leaderboard ------------------------------------------------------- */
+
+#leaderboard-body tr {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+#leaderboard-body td {
+  padding: 0.5rem 0.6rem;
+}
+
+.rank-cell {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  text-align: center;
+  width: 2.5rem;
+}
+.rank-1 { color: var(--neon-amber); text-shadow: 0 0 6px var(--neon-amber); }
+.rank-2 { color: #cbd5e1; text-shadow: 0 0 6px #cbd5e1; }
+.rank-3 { color: #f97316; text-shadow: 0 0 6px #f97316; }
+.rank-other { color: #64748b; }
+
+.name-cell {
+  color: #e2e8f0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.score-cell {
+  text-align: right;
+  color: var(--neon-cyan);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.empty-row {
+  text-align: center;
+  color: #64748b;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  padding: 1.5rem 0;
+}
+
+/* --- Game over overlay -------------------------------------------------- */
+
+#game-over-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.88);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+}
+
+#game-over-overlay.hidden {
+  display: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { text-shadow: 0 0 8px var(--neon-magenta), 0 0 24px var(--neon-magenta); }
+  50% { text-shadow: 0 0 16px var(--neon-magenta), 0 0 40px var(--neon-magenta); }
+}
+
+.game-over-title {
+  animation: pulse-glow 1.6s ease-in-out infinite;
+}
+
+.submit-feedback {
+  font-size: 0.7rem;
+  min-height: 1rem;
+  color: #94a3b8;
+}
+.submit-feedback.success { color: #4ade80; }
+.submit-feedback.error { color: #f87171; }
+
+/* --- Touch controls (mobile only) --------------------------------------- */
+
+.touch-controls {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .touch-controls {
+    display: grid;
+  }
+}
+
+.touch-btn {
+  font-size: 1.4rem;
+  border: 2px solid rgba(34, 211, 238, 0.5);
+  color: var(--neon-cyan);
+  background: rgba(34, 211, 238, 0.08);
+  border-radius: 8px;
+  padding: 0.75rem;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.touch-btn:active {
+  background: rgba(34, 211, 238, 0.25);
+}
+
+/* --- Scrollbar (keeps the retro vibe on the leaderboard panel) ---------- */
+
+.retro-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.retro-scroll::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+.retro-scroll::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.4);
+  border-radius: 4px;
+}
