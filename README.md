@@ -1,8 +1,9 @@
-![NEON DROP screenshot](img/NEo%20game.png)
-
 # NEON DROP
+
 A dark retro-themed arcade Tetris game. Players type a name (no accounts, no
 login), play in the browser, and submit their score to a global leaderboard.
+
+![NEON DROP screenshot](img/NEo%20game.png)
 
 ```
 neon-drop/
@@ -22,6 +23,8 @@ neon-drop/
 │   ├── middleware/validate.js
 │   └── package.json
 ├── schema.sql          PostgreSQL migration (MySQL notes included)
+├── img/
+│   └── NEo game.png
 └── README.md
 ```
 
@@ -40,9 +43,12 @@ of `schema.sql` if you ever need to port off Postgres.
 
 ## 2. Backend setup (Express API)
 
+From the repo root:
+
 ```bash
 cd server
-cp .env.example .env   # then edit .env with your real DB credentials
+copy .env.example .env   # Windows copy command
+# then edit .env with your real DB credentials
 npm install
 npm start               # or: npm run dev  (auto-restarts on file changes)
 ```
@@ -78,14 +84,14 @@ Invalid input returns `422` with details on which field failed.
 
 ## 3. Frontend setup
 
-The client is static — no bundler, no npm install. Serve the `client/`
-folder with any static file server, for example:
+From the repo root, run:
 
 ```bash
-npx serve client
+cd client
+npx serve .
 ```
 
-That typically serves on `http://localhost:3000` — check your terminal
+That typically serves the frontend on `http://localhost:3000` — check your terminal
 output for the exact port it picks.
 
 ## 4. Making the two sides match
