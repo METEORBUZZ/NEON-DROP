@@ -1,5 +1,6 @@
-# NEON DROP
+![NEON DROP screenshot](img/NEo%20game.png)
 
+# NEON DROP
 A dark retro-themed arcade Tetris game. Players type a name (no accounts, no
 login), play in the browser, and submit their score to a global leaderboard.
 
