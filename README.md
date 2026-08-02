@@ -3,7 +3,7 @@
 A dark retro-themed arcade Tetris game. Players type a name (no accounts, no
 login), play in the browser, and submit their score to a global leaderboard.
 <p align="center">
-  <img src="img/NEo%20game.png" alt="NEON DROP" width="800">
+  <img src="NEON-DROP/img/NEo game.png" alt="NEON DROP" width="800">
 </p>
 
 ```
